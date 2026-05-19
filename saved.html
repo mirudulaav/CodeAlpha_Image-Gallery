@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saved Collection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500&display=swap"rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<header class="top-header">
+  <div class="container header-container">
+    <a href="index.html" class="logo">Vintage Echoes</a>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="cars.html">Cars</a>
+      <a href="hats.html">Hats</a>
+      <a href="shoes.html">Shoes</a>
+      <a href="arts.html">Arts</a>
+     <a href="jewellery.html">Jewellery</a>
+      <a href="saved.html">Saved</a>
+    </nav>
+  </div>
+</header>
+
+<section class="gallery-title text-center">
+<h1>Saved Collection</h1>
+  <p>Your favorite vintage memories.</p>
+  <button id="clearAllBtn" class="clear-btn"> Clear All</button>
+</section>
+<section class="container pb-5">
+  <div class="gallery-grid" id="savedGrid"></div>
+</section>
+
+<footer class="footer">
+  <div class="container text-center">
+    <h3>Vintage Echoes</h3>
+    <p>Curated vintage collections inspired by timeless elegance.</p>
+    <p class="footer-mail">vintageechoesgallery@gmail.com</p>
+  </div>
+</footer>
+<script>
+const savedGrid =document.getElementById('savedGrid');
+const clearAllBtn =document.getElementById('clearAllBtn');
+let savedImages =
+JSON.parse(localStorage.getItem('savedImages')) || [];
+function renderSavedImages(){
+  savedGrid.innerHTML = '';
+  if(savedImages.length === 0){
+    savedGrid.innerHTML =
+    '<p class="empty-text">No saved images yet.</p>';
+    return;
+  }
+  savedImages.forEach((item,index) => {
+    savedGrid.innerHTML += `
+    <div class="gallery-card">
+      <img
+        src="${item.img}"
+        alt="${item.title}">
+      <div class="card-content">
+        <h3>${item.title}</h3>
+        <button
+          class="remove-btn"
+          onclick="removeImage(${index})">
+          Remove
+        </button>
+      </div>
+    </div>
+    `;
+  });
+}
+
+function removeImage(index){
+  savedImages.splice(index,1);
+  localStorage.setItem(
+    'savedImages',
+    JSON.stringify(savedImages)
+  );
+  renderSavedImages();
+}
+clearAllBtn.addEventListener('click', () => {
+  localStorage.removeItem('savedImages');
+  savedImages = [];
+  renderSavedImages();
+});
+renderSavedImages();
+</script>
+</body>
+</html>
